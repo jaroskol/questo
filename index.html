@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Questly v7.6 - Final Layout & Replay</title>
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    
+<div id="vignette" class="low-hp-vignette"></div>
+
+<button class="floating-stats-btn" onclick="toggleSidebar()">
+    <span class="icon">📊</span>
+    <span class="label">STATUS</span>
+</button>
+
+<button class="floating-shop-btn" onclick="openShop()">
+    <span class="icon">💰</span>
+    <span class="label">SKLEP</span>
+</button>
+
+<button class="floating-account-btn" onclick="toggleAccountPanel()">
+  <span class="icon">👤</span>
+  <span class="label">KONTO</span>
+</button>
+
+<div id="accountOverlay" class="event-overlay" style="display:none;">
+  <div class="event-modal" style="max-width:560px; width:min(560px, 92vw); text-align:left;">
+  <!-- HEADER -->
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+    <div>
+      <h2 style="margin:0;">Konto</h2>
+      <div style="opacity:.75; font-size:.85rem; margin-top:4px;">
+        Panel konta (do rozbudowy)
+      </div>
+    </div>
+    <button class="btn ghost" onclick="toggleAccountPanel()">✕</button>
+  </div>
+
+  <!-- STATUS / BADGE -->
+  <div style="margin-top:14px; display:flex;justify-content:space-between;align-items:center;">
+    <small style="opacity:.75; letter-spacing:1px;">STATUS</small>
+    <span id="accountBadge" style="font-size:.85rem;opacity:.95;">Gość</span>
+  </div>
+
+  <!-- LOGGED OUT -->
+  <div id="accountLoggedOut" style="margin-top:14px;">
+    <div style="font-size:.92rem;opacity:.85;margin-bottom:12px; line-height:1.35;">
+      Zaloguj się, aby zapisywać postęp w chmurze i mieć dostęp do panelu konta.
+    </div>
+    <button class="btn" style="width:100%; background:var(--gold); border:none;" onclick="openAuth()">
+      Zaloguj / Załóż konto
+    </button>
+  </div>
+
+  <!-- LOGGED IN -->
+  <div id="accountLoggedIn" style="display:none; margin-top:14px;">
+
+    <!-- SECTION: PROFIL -->
+    <div style="margin-top:8px; padding:12px; border-radius:14px; border:1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04);">
+      <div style="font-size:.75rem; letter-spacing:2px; opacity:.75;">PROFIL</div>
+
+      <div style="margin-top:10px; display:grid; gap:10px;">
+        <div style="display:flex; justify-content:space-between; gap:12px;">
+          <div style="opacity:.8;">Email</div>
+          <div id="accountEmail" style="font-weight:900; text-align:right;"></div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; gap:12px;">
+          <div style="opacity:.8;">Nick</div>
+          <div id="accountNick" style="font-weight:900; text-align:right;">—</div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; gap:12px;">
+          <div style="opacity:.8;">ID użytkownika</div>
+          <div id="accountUid" style="opacity:.9; text-align:right;">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION: DANE (PLACEHOLDERY DO ROZBUDOWY) -->
+    <div style="margin-top:12px; padding:12px; border-radius:14px; border:1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.03);">
+      <div style="font-size:.75rem; letter-spacing:2px; opacity:.75;">DANE / STATYSTYKI</div>
+
+      <div style="margin-top:10px; display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+        <div style="padding:10px; border-radius:12px; border:1px solid rgba(255,255,255,0.10); background: rgba(0,0,0,0.25);">
+          <div style="opacity:.75; font-size:.8rem;">Ostatnia synchronizacja</div>
+          <div id="accountLastSync" style="font-weight:900; margin-top:6px;">—</div>
+        </div>
+
+        <div style="padding:10px; border-radius:12px; border:1px solid rgba(255,255,255,0.10); background: rgba(0,0,0,0.25);">
+          <div style="opacity:.75; font-size:.8rem;">Wersja zapisu</div>
+          <div id="accountSaveVersion" style="font-weight:900; margin-top:6px;">—</div>
+        </div>
+      </div>
+
+      <div style="margin-top:10px; opacity:.75; font-size:.85rem; line-height:1.35;">
+      </div>
+    </div>
+
+    <!-- SECTION: AKCJE -->
+    <div style="margin-top:12px; display:flex; gap:10px;">
+      <button class="btn ghost" style="flex:1;" onclick="authSignOut()">
+        Wyloguj
+      </button>
+      <button class="btn" style="flex:1; background:var(--gold); border:none;" onclick="toggleAccountPanel()">
+        Zamknij
+      </button>
+    </div>
+
+  </div>
+</div>
+
+</div>
+
+<div id="cloudUserLabel" style="margin-top:8px;font-size:.75rem;opacity:.8;"></div>
+<button class="floating-ach-btn" onclick="toggleAchievements()">
+    <span class="icon">🏆</span>
+    <span class="label">ACH</span>
+</button>
+
+
+
+
+<div id="sidebar" class="sidebar">
+    <button style="position:absolute; top:20px; right:20px; background:none; color:white; border:none; font-size:1.5rem; cursor:pointer;" onclick="toggleSidebar()">✕</button>
+    
+
+    <h3>Perki Klasy</h3>
+<div id="perksContainer"></div>
+
+<hr style="border:0; border-top:1px solid var(--border); margin:20px 0;">
+    <h3>Statystyki Sesji</h3>
+    <div id="sessionStats"></div>
+    <button onclick="resetStats()" style="margin-top:30px; color:var(--error); background:none; font-size:0.75rem; cursor:pointer; width:100%; text-align:left; border:none;">USUŃ CAŁY POSTĘP (RESET LVL)</button>
+    <hr style="border:0; border-top:1px solid var(--border); margin:20px 0;">
+<h3>Ustawienia</h3>
+<hr style="margin:16px 0; opacity:.2;">
+<button class="btn ghost" onclick="exitToMenu()">
+  ⬅ MENU
+</button>
+<hr style="margin:16px 0; opacity:.2;">
+<div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); padding:12px; border-radius:14px;">
+ <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+  <small style="color:var(--muted); font-weight:800; letter-spacing:1px;">GŁOŚNOŚĆ</small>
+  <b id="volLabel">100%</b>
+</div>
+
+<input id="volSlider" type="range" min="0" max="100" step="1" value="100" style="width:100%;">
+
+<button id="applyVolumeBtn"
+  style="margin-top:10px;width:100%;padding:8px 10px;border-radius:12px;
+         border:1px solid var(--border);background:rgba(255,255,255,0.06);
+         color:var(--gold);font-weight:900;cursor:pointer;">
+  Zastosuj głośność
+</button>
+  </div>
+</div>
+
+<div id="perkModal" class="modal hidden">
+    <div class="modal-card">
+        <h2 id="perkTitle"></h2>
+        <div id="perkList"></div>
+        <button onclick="closePerkModal()">Zamknij</button>
+    </div>
+</div>
+
+<div id="achievementsModal" class="modal hidden">
+  <div class="modal-card">
+    <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
+      <h2 style="margin:0;">🏆 Osiągnięcia</h2>
+      <button onclick="toggleAchievements()" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;">✕</button>
+    </div>
+
+    <div id="achievementsList" style="margin-top:14px;"></div>
+
+    <div style="margin-top:12px; font-size:0.8rem; opacity:0.7;">
+      Kliknij odblokowane osiągnięcie, żeby zobaczyć opis i odebrać bonus XP.
+    </div>
+  </div>
+</div>
+
+<div id="startScreen" class="screen start-screen">
+  <div class="start-card">
+
+    <div class="start-logo">🎵</div>
+
+    <h1 class="start-title">QUESTLY</h1>
+
+
+    <div class="start-actions">
+
+  <button class="btn primary" onclick="startFromMenu()">
+    ▶ START
+  </button>
+
+  <button class="btn ghost" onclick="openClassSelectFromMenu()">
+    Change Class
+  </button>
+
+  <button class="btn ghost" onclick="continueFromMenu()">
+    Continue
+  </button>
+
+  <!-- ===== ETAP 1: WYBÓR TRUDNOŚCI ===== -->
+  <div style="margin-top:14px; width:100%; max-width:360px;">
+    <div style="font-size:0.7rem; letter-spacing:2px; opacity:.75; margin-bottom:8px;">
+      TRUDNOŚĆ RUNA
+    </div>
+
+    <div style="display:flex; gap:8px;">
+      <button class="btn ghost" style="flex:1" onclick="setDifficulty('easy')">
+        ŁATWY
+      </button>
+      <button class="btn ghost" style="flex:1" onclick="setDifficulty('medium')">
+        ŚREDNI
+      </button>
+      <button class="btn ghost" style="flex:1" onclick="setDifficulty('hard')">
+        TRUDNY
+      </button>
+    </div>
+
+    <div id="difficultyInfo"
+         style="margin-top:8px; font-size:0.85rem; opacity:.85;">
+      <!-- tu JS wstawi opis -->
+    </div>
+  </div>
+
+  <!-- ===== ETAP 1: DRZEWKO ===== -->
+  <button class="btn ghost" onclick="openSkillTrees('start')">
+    🌳 Drzewka ulepszeń
+  </button>
+
+</div>
+
+  </div>
+</div>
+
+<div id="classScreen" class="center">
+    <h1>Wybierz swoją Klasę</h1>
+    <div class="class-grid">
+        <div class="class-card warrior" onclick="selectClass('warrior')">
+            <i>🛡️</i><h3>Wojownik</h3><p>7❤️ na start</p>
+             <button style="
+    margin-top:10px; width:100%; padding:8px 10px; border-radius:12px;
+    border:1px solid var(--border); background:rgba(255,255,255,0.04);
+    color:var(--gold); font-weight:800; cursor:pointer;"
+    onclick="event.stopPropagation(); showPerksForClass('warrior')">
+    Zobacz Perki
+  </button>
+        </div>
+        <div class="class-card mage" onclick="selectClass('mage')">
+            <i>🔮</i><h3>Mag</h3><p>Więcej podpowiedzi</p>
+             <button style="
+    margin-top:10px; width:100%; padding:8px 10px; border-radius:12px;
+    border:1px solid var(--border); background:rgba(255,255,255,0.04);
+    color:var(--gold); font-weight:800; cursor:pointer;"
+    onclick="event.stopPropagation(); showPerksForClass('mage')">
+    Zobacz Perki
+  </button>
+        </div>
+        <div class="class-card rogue" onclick="selectClass('rogue')">
+            <i>🗡️</i><h3>Łotr</h3><p>Szansa na x2 PKT</p>
+             <button style="
+    margin-top:10px; width:100%; padding:8px 10px; border-radius:12px;
+    border:1px solid var(--border); background:rgba(255,255,255,0.04);
+    color:var(--gold); font-weight:800; cursor:pointer;"
+    onclick="event.stopPropagation(); showPerksForClass('rogue')">
+    Zobacz Perki
+  </button>
+  
+        </div>
+    </div>
+</div>
+
+<div id="selectScreen" class="center hidden" style="flex-direction: column; position: relative; min-height: 100vh;">
+    
+    <div class="hud-layer" style="position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: center; padding: 25px; pointer-events: none; z-index: 9999;">
+        <div class="minimal-hud" style="display: flex; align-items: center; gap: 25px; background: rgba(0,0,0,0.7); padding: 10px 30px; border-radius: 50px; border: 1px solid rgba(255,215,0,0.2); backdrop-filter: blur(10px); pointer-events: auto;">
+            
+            <div style="text-align: right;">
+                <div id="hearts" style="font-size: 1.1rem;">❤️❤️❤️❤️❤️</div>
+                <div style="font-family: 'Cinzel', serif; color: var(--gold); font-size: 0.5rem; letter-spacing: 1px;">ZDROWIE</div>
+            </div>
+
+            <div style="width: 1px; height: 30px; background: rgba(255,215,0,0.3);"></div>
+
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div id="heroIcon" style="font-size: 2rem;">👤</div>
+                <div style="display: flex; flex-direction: column;">
+                    <span id="selectedClassName" style="font-family: 'Cinzel', serif; color: #fff; font-size: 0.9rem; font-weight: bold; text-transform: uppercase;">Bohater</span>
+                    <div style="width: 80px; height: 3px; background: rgba(255,255,255,0.1); margin: 3px 0; border-radius: 2px; overflow: hidden;">
+                        <div id="xpFill" style="height: 100%; width: 0%; background: var(--gold); box-shadow: 0 0 8px var(--gold); transition: width 0.6s ease;"></div>
+                    </div>
+                    <div id="lvlBadge" style="font-family: 'Cinzel', serif; color: var(--gold); font-size: 0.5rem; letter-spacing: 1px;">LVL 1</div>
+                </div>
+            </div>
+
+            <div style="width: 1px; height: 30px; background: rgba(255,215,0,0.3);"></div>
+
+            <div style="display: flex; gap: 15px;">
+                <div style="text-align: left;">
+                    <div id="top-score" style="font-family: 'Cinzel', serif; color: #fff; font-size: 1.1rem; font-weight: 800;">0</div>
+                    <div style="font-family: 'Cinzel', serif; color: var(--gold); font-size: 0.5rem;">PUNKTY</div>
+                </div>
+                <div style="text-align: left;">
+    <div id="currentStage" style="font-family: 'Cinzel', serif; color: #fff; font-size: 1.2rem; font-weight: 800; line-height: 1;">1</div>
+    <div style="font-family: 'Cinzel', serif; color: var(--gold); font-size: 0.55rem; letter-spacing: 1px;">ETAP</div>
+</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="game-content-wrapper" style="margin-top: 120px; display: flex; flex-direction: column; align-items: center; width: 100%;">
+        <div class="paths-grid" id="pathOptions"></div>
+        <div id="activeBountyContainer" style="width: 100%; max-width: 600px; margin-top: 30px;"></div>
+    </div>
+
+    <div>  
+    <div>   
+    <main class="adventure-map">
+        <h2 class="section-title">Wybierz swoją ścieżkę</h2>
+        <div id="pathChoices" class="path-container"></div>
+    </main>
+    </div>
+    <div>
+    <section class="bounty-section">
+        <div id="bountyUi"></div>
+    </section>
+    </div>
+    </div>
+</div>
+
+<div id="gameScreen" class="center hidden">
+
+  <div id="heroOverlay" class="hero-overlay hidden">
+    <div class="hero-card">
+      <div class="hero-avatar" id="heroAvatar">👤</div>
+
+      <div class="hero-info">
+        <div class="hero-name" id="heroName">Bohater</div>
+        <div class="hero-hearts" id="heroHearts">❤️❤️❤️❤️❤️</div>
+        <div id="effectHud" class="effect-hud"></div>
+        <div class="hero-attempt" id="heroAttempt">Próba 1</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="game-card">
+
+    <div id="statusLabel"
+      style="font-size:0.7rem;color:var(--muted);font-weight:800;letter-spacing:1px;margin-bottom:5px;">
+      SŁUCHAJ...
+    </div>
+
+    <div class="progress-container">
+      <div id="progressFill"></div>
+    </div>
+
+    <div id="hintDisplay"
+      style="color:var(--gold);font-weight:600;min-height:1.2rem;margin-bottom:15px;font-size:0.9rem;">
+    </div>
+
+    <div class="input-row">
+      <button class="btn-replay" onclick="playCurrent(true)" title="Puść jeszcze raz">🔄</button>
+      <input id="guessInput" list="hints" placeholder="Tytuł utworu...">
+      <button class="btn-main" onclick="checkGuess()">OK</button>
+    </div>
+
+    <datalist id="hints"></datalist>
+
+    <!-- ===== HINTS + HELP (STABILNA WERSJA) ===== -->
+    <div class="hint-help-wrap">
+
+      <!-- PODPOWIEDZI -->
+      <div class="inventory-row">
+       <button
+  class="icon-btn"
+  id="btn-initials"
+  data-tooltip="Litery tytułu"
+  onclick="useHint('initials')">
+  🔡
+  <div class="badge-count" id="count-initials">0</div>
+</button>
+
+        <button
+          class="icon-btn"
+          id="btn-artist"
+          data-tooltip="Wykonawca"
+          onclick="useHint('artist')">
+          👤
+          <div class="badge-count" id="count-artist">0</div>
+        </button>
+
+        <button
+          class="icon-btn"
+          id="btn-time"
+          data-tooltip="Więcej czasu"
+          onclick="useHint('time')">
+          ⏳
+          <div class="badge-count" id="count-time">0</div>
+        </button>
+
+        <button
+          class="icon-btn"
+          id="btn-5titles"
+          data-tooltip="5 opcji"
+          onclick="useHint('5titles')">
+          🎯
+          <div class="badge-count" id="count-5titles">0</div>
+        </button>
+      </div>
+
+      <!-- IKONA INFO -->
+      <button
+        class="hint-help-icon-btn"
+        type="button"
+        onclick="toggleHintHelp()"
+        aria-label="Informacje o podpowiedziach"
+        title="Informacje o podpowiedziach">
+        ℹ️
+      </button>
+
+      <!-- PANEL INFO (overlay; nie blokuje klików gdy schowany) -->
+      <div id="hintHelpPanel" class="hint-help-panel hidden"></div>
+
+    </div>
+    <!-- ===== /HINTS ===== -->
+
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div id="successModal" class="modal hidden" aria-hidden="true">
+  <div class="modal-backdrop"></div>
+
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="successTitle">
+    <div class="modal-head">
+      <div class="modal-badge">✔</div>
+      <div class="modal-title-wrap">
+        <div id="successTitle" class="modal-title">Trafione!</div>
+        <div id="successSubtitle" class="modal-subtitle">Dobra robota.</div>
+      </div>
+      <button id="successClose" class="modal-x" aria-label="Zamknij">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="reward-grid">
+        <div class="reward-item">
+          <div class="reward-label">Punkty</div>
+          <div id="successPts" class="reward-value">+0</div>
+        </div>
+        <div class="reward-item">
+          <div class="reward-label">XP</div>
+          <div id="successXp" class="reward-value">+0</div>
+        </div>
+        <div class="reward-item">
+          <div class="reward-label">Próby</div>
+          <div id="successTry" class="reward-value">1/3</div>
+        </div>
+        <div class="reward-item">
+          <div class="reward-label">Drop</div>
+          <div id="successDrop" class="reward-value">Brak</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-foot">
+      <button id="successNext" class="modal-btn primary">Dalej</button>
+    </div>
+  </div>
+</div>
+
+<div id="authOverlay" class="auth-overlay hidden">
+  <div class="auth-card">
+    <button class="auth-x" onclick="closeAuth()">✕</button>
+
+    <h2>Twoje konto</h2>
+    <p class="auth-sub">Zaloguj się, aby zapisywać postęp w chmurze.</p>
+
+    <label class="auth-label">E-mail</label>
+    <input id="authEmail" class="auth-input" type="email" placeholder="np. gracz@email.com">
+
+    <label class="auth-label">Hasło</label>
+    <input id="authPass" class="auth-input" type="password" placeholder="minimum 6 znaków">
+
+    <div id="authStatus" class="auth-status"></div>
+
+    <div class="auth-actions">
+      <button class="auth-btn" onclick="authSignIn()">Zaloguj</button>
+      <button class="auth-btn ghost" onclick="authSignUp()">Zarejestruj</button>
+    </div>
+  </div>
+</div>
+
+
+<div id="player-wrap" style="position:absolute; left:-9999px;"><div id="ytPlayer"></div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+<script src="script.js"></script>
+</body>
+</html>
